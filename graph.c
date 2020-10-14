@@ -1,69 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define N 6 //// определяем максимальное количество вершин в графе
 
-// Define maximum number of vertices in the graph
-#define N 6
-
-// Data structure to store graph
+// структура данных для хранения графика
 struct Graph {
-	// An array of pointers to Node to represent adjacency list
+	// массив указателей на узел для представления списка смежности
 	struct Node* head[N];
 };
 
-// A data structure to store adjacency list nodes of the graph
+// структура данных для хранения узлов списка смежности графа
 struct Node {
 	int dest, weight;
 	struct Node* next;
 };
 
-// data structure to store graph edges
+// структура данных для хранения ребер графа
 struct Edge {
 	int src, dest, weight;
 
 };
 
-// Function to create an adjacency list from specified edges
+// функция для создания списка смежности из указанных ребер
 struct Graph* createGraph(struct Edge edges[], int n)
 {
 	unsigned i;
 
-	// allocate memory for graph data structure
+	// выделяем память для структуры данных графа
 	struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
 
-	// initialize head pointer for all vertices
+	// инициализируем указатель  для всех вершин
 	for (i = 0; i < N; i++)
 		graph->head[i] = NULL;
 
-	// add edges to the directed graph one by one
+	// добавляем ребра к ориентированному графу одно за другим
 	for (i = 0; i < n; i++)
 	{
-		// get source and destination vertex
+		// получаем исходную и конечную вершины
 		int src = edges[i].src;
 		int dest = edges[i].dest;
 		int weight = edges[i].weight;
 
-		// allocate new node of Adjacency List from src to dest
+		// выделяем новый узел списка смежности из src в dest
 		struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
 		newNode->dest = dest;
 		newNode->weight = weight;
 
-		// point new node to current head
+		// указываем новый узел на текущий
 		newNode->next = graph->head[src];
 
-		// point head pointer to new node
+		// указываем указатель на новый узел
 		graph->head[src] = newNode;
 	}
 
 	return graph;
 }
 
-// Function to print adjacency list representation of graph
+// функция для печати представления графа в виде списка смежности
 void printGraph(struct Graph* graph)
 {
 	int i;
 	for (i = 0; i < N; i++)
 	{
-		// print current vertex and all ts neighbors
+		// выводим текущую вершину и всех ее соседей
 		struct Node* ptr = graph->head[i];
 		while (ptr != NULL)
 		{
@@ -75,24 +73,23 @@ void printGraph(struct Graph* graph)
 	}
 }
 
-// Weighted Directed Graph Implementation in C
+// реализация взвешенного ориентированного графа на Cи
 int main(void)
 {
-	// input array containing edges of the graph (as per above diagram)
-	// (x, y, w) tuple in the array represents an edge from x to y having weight w
+	// входной массив, содержащий ребра графа (как на диаграмме выше)
 	struct Edge edges[] =
 	{
 		{ 0, 1, 6 }, { 1, 2, 7 }, { 2, 0, 5 }, { 2, 1, 4 },
 		{ 3, 2, 10 }, { 4, 5, 1 }, { 5, 4, 3 }
 	};
 
-	// calculate number of edges
+	// вычисляем количество ребер
 	int n = sizeof(edges)/sizeof(edges[0]);
 
-	// construct graph from given edges
+	// строим граф по заданным ребрам
 	struct Graph *graph = createGraph(edges, n);
 
-	// print adjacency list representation of graph
+	// выводим представление графа в виде списка смежности
 	printGraph(graph);
 
 	return 0;
