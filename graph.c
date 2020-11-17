@@ -16,7 +16,13 @@ void print_dot(int n, int arr[n][n]) {
     FILE* f = fopen("graph.dot", "w");    // открытие файла graph.dot,   "w"=write
     fprintf(f, "graph{\n");
     printf("graph{\n");                   // реализовываем вид, который будет понятен, для Graphviz,          
-    int i = 0; int j = 0;                 // который содержит такой синтаксис: graph{
+    int i = 0; int j = 0;  int m = 0;               // который содержит такой синтаксис: graph{
+    for (i = 0; m < n; m++){
+       printf("%d ", m);
+       fprintf(f, "%d ", m);
+            }
+            printf("\n");
+            
     for (i = 0; i < n; i++){              //                                      0--1;
         for (j = i; j < n; j++){          //                                     и т.д.
                 if(arr[i][j]==1){         //                                          }
@@ -37,6 +43,16 @@ void connected(int n, int r, int arr[n][n]) {
     else {
       printf("Граф связный, теорема работает\n");   
       }
+ }
+ 
+ void addition(int v, int arr[n][n]){
+     int v;
+     printf("Введите необходимую вершину:");
+     scanf ("%d", &v);
+     printf("С какими ребрами вы хотите ее соединить? ");
+     scanf(" %d" "%d", &a1, &a2);
+               arr[a1][a2] = 1;
+               arr[a2][a1] = 1;   
  }
  
 int main()
@@ -61,5 +77,7 @@ int main()
     print_graph(n, arr);
     print_dot(n, arr);
     connected(n,r, arr);
+    addition(v, arr[n][n]);
     return 0;
     }
+
