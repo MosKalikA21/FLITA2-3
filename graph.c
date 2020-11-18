@@ -1,7 +1,27 @@
 #include <stdio.h>
 #include <locale.h>
+#include <stdlib.h>
 
-void print_graph(int n, int arr[n][n]) {
+int** create_array(int n) {
+    int ** arr = malloc(sizeof(int*) * n);
+    for(int i = 0; i < n; i++){
+       arr[i] = malloc(sizeof(int)*n);
+      for(int j = 0; j < n; j++) {
+         arr[i][j] = 0;
+      }
+    }
+    return arr;    
+}
+
+void free_array(int n, int** arr) {
+   for(int i = 0; i < n; i++){
+         free(arr[i]);
+   }
+   free(arr);
+
+}
+
+void print_graph(int n, int** arr) {
     int i = 0; int j = 0; 
     printf("Матрица смежности:\n");
     for (i = 0; i < n; i++){
@@ -12,7 +32,7 @@ void print_graph(int n, int arr[n][n]) {
     }
 }
 
-void print_dot(int n, int arr[n][n]) {        
+void print_dot(int n, int** arr) {        
     FILE* f = fopen("graph.dot", "w");    // открытие файла graph.dot,   "w"=write
     fprintf(f, "graph{\n");
     printf("graph{\n");                   // реализовываем вид, который будет понятен, для Graphviz,          
@@ -36,7 +56,7 @@ void print_dot(int n, int arr[n][n]) {
     fclose(f);
 }
 
-void connected(int n, int r, int arr[n][n]) {
+void connected(int n, int r, int** arr) {
     if (r < ((n - 1) * (n - 2)) / 2) {
       printf("Граф несвязный, теорема не работает\n");  
       } 
@@ -45,29 +65,19 @@ void connected(int n, int r, int arr[n][n]) {
       }
  }
  
- void addition(int v, int arr[n][n]){
-     int v;
-     printf("Введите необходимую вершину:");
-     scanf ("%d", &v);
-     printf("С какими ребрами вы хотите ее соединить? ");
-     scanf(" %d" "%d", &a1, &a2);
-               arr[a1][a2] = 1;
-               arr[a2][a1] = 1;   
- }
+ void addition(int n, int** arr){
+ 
+   }
  
 int main()
 {   setlocale(LC_ALL, "RUS");
-    int n; int i = 0; int j = 0; int r; int a1; int a2;
+    int n; int j; int r; int a1; int a2; 
     printf("Введите количество вершин:");
     scanf("%d", &n);                        
-    int arr[n][n];                      
+
     printf("Введите количество ребер:");   
     scanf("%d", &r);
-    for (i = 0; i < n; i++){
-        for (j = 0; j < n; j++){
-            arr[i][j] = 0;       //заполнение массива нулями
-        }
-    }
+    int** arr = create_array(n);
     printf("Введите вершины, которые нужно соединить в качестве ребер:\n");
             for (i = 0; i < r; i++){
         scanf(" %d" "%d", &a1, &a2);
@@ -77,7 +87,12 @@ int main()
     print_graph(n, arr);
     print_dot(n, arr);
     connected(n,r, arr);
-    addition(v, arr[n][n]);
+    printf("Добавляем новую вершину!");
+    int** arr2 = create_array(n + 1);
+    // скопировать старый массив 
+    free_array(n, arr);
+    
+    // добавляем ребра в arr2
+    free_array(n + 1, arr2);
     return 0;
     }
-
